@@ -669,7 +669,7 @@ const leftTrimLength = (s: string): number => {
 };
 
 /// Return the number of new line characters in the given string.
-const countNewLines = (s: string): number => {
+export const countNewLines = (s: string): number => {
 	return (s.match(/\n/g) || []).length;
 };
 
@@ -688,7 +688,7 @@ const keyword = (s: string): ItemType | null => {
 		case 'break':
 			return ItemType.Break;
 		case 'continue':
-			return ItemType.Break;
+			return ItemType.Continue;
 		case 'else':
 			return ItemType.Else;
 		case 'end':
