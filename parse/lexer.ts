@@ -407,16 +407,14 @@ const lexSpace = (l: Lexer): StateFunction => {
 };
 
 const lexQuote = (l: Lexer): StateFunction => {
-	let val = '';
 	while (true) {
 		const rune = l.nextChar();
-		val += rune;
 		if (rune === '\\') {
 			const nextRune = l.nextChar();
-			if (nextRune != EOF && nextRune != '\n') {
+			if (nextRune !== EOF && nextRune !== '\n') {
 				continue;
 			}
-			val += nextRune;
+
 			return l.errorf('unterminated quoted string');
 		} else if (rune === EOF || rune === '\n') {
 			return l.errorf('unterminated quoted string');
@@ -689,6 +687,8 @@ const keyword = (s: string): ItemType | null => {
 			return ItemType.Break;
 		case 'continue':
 			return ItemType.Continue;
+		case 'define':
+			return ItemType.Define;
 		case 'else':
 			return ItemType.Else;
 		case 'end':
@@ -709,7 +709,7 @@ const keyword = (s: string): ItemType | null => {
 };
 
 /// Return true if the given character is printable.
-const isPrintable = (char: string) => {
+export const isPrintable = (char: string) => {
 	const code = char.charCodeAt(0);
 	// Check if the character's code is within the printable range, including whitespace
 	return (

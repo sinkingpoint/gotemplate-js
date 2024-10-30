@@ -1,3 +1,4 @@
+import { Template } from '../template';
 import { countNewLines, Item, ItemType, Lexer } from './lexer';
 import {
 	ActionNode,
@@ -34,9 +35,9 @@ interface Mode {
 
 // Tree is the representation of a single parsed template.
 export class Tree {
-	private name: string;
+	name: string;
 	private parseName: string;
-	private root: ListNode | null;
+	root: ListNode | null;
 	private funcs: Record<string, Function>[];
 	mode: Mode;
 	private text: string;
@@ -236,7 +237,8 @@ export class Tree {
 		while (this.peek().typ !== ItemType.EOF) {
 			if (this.peek().typ === ItemType.LeftDelim) {
 				const delim = this.next();
-				if (this.nextNonSpace().typ === ItemType.Define) {
+				const ext = this.nextNonSpace();
+				if (ext.typ === ItemType.Define) {
 					const newTree = new Tree('definition', []); // name will be updated once we know it.
 					newTree.text = this.text;
 					newTree.mode = this.mode;
@@ -280,6 +282,7 @@ export class Tree {
 		this.add();
 		this.stopParse();
 	}
+
 	// itemList:
 	//
 	//	textOrAction*
@@ -309,9 +312,8 @@ export class Tree {
 				return new TextNode(this, token.pos, token.val);
 			case ItemType.LeftDelim:
 				this.actionLine = token.line;
-				const val = this.action();
 				this.actionLine = 0;
-				return val;
+				return this.action();
 			case ItemType.Comment:
 				return new CommentNode(this, token.pos, token.val);
 			default:
@@ -814,7 +816,7 @@ export class Tree {
 	}
 }
 
-const isEmptyTree = (n: Node | null): boolean => {
+export const isEmptyTree = (n: Node | null): boolean => {
 	if (!n) {
 		return true;
 	}
@@ -861,11 +863,17 @@ const unquote = (s: string): string => {
 		throw `expected "${openQuote} to end quote, got ${s[s.length - 1]}`;
 	}
 
-	return s.substring(1, s.length - 1);
+	let unquoted = s.substring(1, s.length - 1);
+	unquoted = unquoted.replace('\\n', '\n');
+	unquoted = unquoted.replace('\\t', '\t');
+	unquoted = unquoted.replace('\\"', '"');
+	unquoted = unquoted.replace(`\\'`, `'`);
+
+	return unquoted;
 };
 
 export const Parse = (name: string, text: string, leftDelim: string, rightDelim: string, funcs: Record<string, Function>[]) => {
-	const treeSet = {};
+	const treeSet: Record<string, Tree> = {};
 	const t = new Tree(name, []);
 	t.parse(text, leftDelim, rightDelim, treeSet, funcs);
 	return treeSet;
