@@ -8,7 +8,6 @@ import {
 	IdentifierNode,
 	IfNode,
 	ListNode,
-	NilNode,
 	Node,
 	NodeType,
 	NumberNode,
