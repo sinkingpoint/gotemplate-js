@@ -1,6 +1,6 @@
 {
   "name": "@sinkingpoint/gotemplate",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Go templating, in Javascript",
   "types": "dist/*.d.ts",
   "exports": "./dist/index.js",
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/sinkingpoint/gotemplate-js.git"
   },
   "author": "Colin Douch",
-  "license": "GPL-3.0",
+  "license": "BSD 3-Clause",
   "bugs": {
     "url": "https://github.com/sinkingpoint/gotemplate-js/issues"
   },
