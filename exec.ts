@@ -109,9 +109,9 @@ export class State {
 
 	printValue(node: Node, val: any): void {
 		this.at(node);
-		if(typeof val === "string") {
+		if (typeof val === 'string') {
 			this.out.write(val);
-		} else if(Array.isArray(val)) {
+		} else if (Array.isArray(val)) {
 			// Munge the array into Go's array syntax (i.e. ` ` instead of `,` for seperators).
 			this.out.write(`[${val.map(String).join(' ')}]`);
 		} else {
@@ -360,17 +360,17 @@ export class State {
 		const n = ident.length;
 		for (let i = 0; i < n - 1; i++) {
 			receiver = this.evalField(dot, ident[i], node, [], {}, receiver);
-			if(typeof receiver === "undefined") {
+			if (typeof receiver === 'undefined') {
 				// Go makes a disinction here between structs and maps. If one tries to access an undefined
 				// field on a struct, then this will panic. If you try the same on a _map_ we return `<no value>`.
 				// In the Javascript case, there is no such distinction, so we err on the side of not exploding.
-				return "<no value>";
+				return '<no value>';
 			}
 		}
 
 		const val = this.evalField(dot, ident[n - 1], node, args, final, receiver);
-		if(typeof val === "undefined") {
-			return "<no value>";
+		if (typeof val === 'undefined') {
+			return '<no value>';
 		}
 
 		return val;
@@ -440,27 +440,27 @@ export class State {
 
 	evalArg(dot: any, n: Node): any {
 		this.at(n);
-		switch(n.type()) {
-		case NodeType.Dot:
-			return dot;
-		case NodeType.Nil:
-			return null;
-		case NodeType.Field:
-			return this.evalFieldNode(dot, n as FieldNode, [n], null);
-		case NodeType.Variable:
-			return this.evalVariableNode(dot, n as VariableNode, [], null);
-		case NodeType.Pipe:
-			return this.evalPipeline(dot, n as PipeNode);
-		case NodeType.Identifier:
-			return this.evalFunction(dot, n as IdentifierNode, n as IdentifierNode, [], null);
-		case NodeType.Chain:
-			return this.evalChainNode(dot, n as ChainNode, [], null);
-		case NodeType.Bool:
-			return (n as BoolNode).val;
-		case NodeType.Number:
-			return (n as NumberNode).num;
-		case NodeType.String:
-			return (n as StringNode).text;
+		switch (n.type()) {
+			case NodeType.Dot:
+				return dot;
+			case NodeType.Nil:
+				return null;
+			case NodeType.Field:
+				return this.evalFieldNode(dot, n as FieldNode, [n], null);
+			case NodeType.Variable:
+				return this.evalVariableNode(dot, n as VariableNode, [], null);
+			case NodeType.Pipe:
+				return this.evalPipeline(dot, n as PipeNode);
+			case NodeType.Identifier:
+				return this.evalFunction(dot, n as IdentifierNode, n as IdentifierNode, [], null);
+			case NodeType.Chain:
+				return this.evalChainNode(dot, n as ChainNode, [], null);
+			case NodeType.Bool:
+				return (n as BoolNode).val;
+			case NodeType.Number:
+				return (n as NumberNode).num;
+			case NodeType.String:
+				return (n as StringNode).text;
 		}
 	}
 }

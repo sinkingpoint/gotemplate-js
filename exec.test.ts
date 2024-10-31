@@ -76,19 +76,19 @@ test('nested assignment changes the last declaration', () => {
 });
 
 test('.Method0', () => {
-    testExecute({input: "-{{.Method0}}-", output: "-M0-", data: tVal, ok: true}, null);
+	testExecute({ input: '-{{.Method0}}-', output: '-M0-', data: tVal, ok: true }, null);
 });
 
 test('.Method1(1234)', () => {
-    testExecute({input: "-{{.Method1 1234}}-", output: "-1234-", data: tVal, ok: true}, null);
+	testExecute({ input: '-{{.Method1 1234}}-', output: '-1234-', data: tVal, ok: true }, null);
 });
 
 test('.Method1(.I)', () => {
-    testExecute({input: "-{{.Method1 .I}}-", output: "-17-", data: tVal, ok: true}, null);
+	testExecute({ input: '-{{.Method1 .I}}-', output: '-17-', data: tVal, ok: true }, null);
 });
 
 test('.Method2(3, .X)', () => {
-    testExecute({input: "-{{.Method2 3 .X}}-", output: "-Method2: 3 x-", data: tVal, ok: true}, null);
+	testExecute({ input: '-{{.Method2 3 .X}}-', output: '-Method2: 3 x-', data: tVal, ok: true }, null);
 });
 
 interface execTest {
@@ -175,7 +175,7 @@ const tVal = {
 	Empty4: { U: 'UinEmpty' },
 	NonEmptyInterface: { X: 'x' },
 	STR: 'fozzle',
-    'Method0': () => 'M0',
-    'Method1': (a: number) => a,
-    'Method2': (a: number, s: string) => `Method2: ${a} ${s}`
+	Method0: () => 'M0',
+	Method1: (a: number) => a,
+	Method2: (a: number, s: string) => `Method2: ${a} ${s}`,
 };

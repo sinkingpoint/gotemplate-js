@@ -1,24 +1,24 @@
-import { isPrintable } from "./parse/lexer";
-import { Template } from "./template";
+import { isPrintable } from './parse/lexer';
+import { Template } from './template';
 
 export const builtins = (): Record<string, Function> => {
 	return {
-		'and': and,
-		'call': () => {},
-		'html': (...args: any[]) => HTMLEscapeString(evalArgs(args)),
-		'index': index,
-		'slice': slice,
-		'js': (...args: any[]) => JSEscapeString(evalArgs(args)),
-		'len': length,
-		'not': not,
-		'or': or,
-		'println': (...args: any[]) => args.map(String).join(' ') + '\n',
-        'eq': eq,
-        'ge': ge,
-        'gt': gt,
-        'le': le,
-        'lt': lt,
-        'ne': ne
+		and: and,
+		call: () => {},
+		html: (...args: any[]) => HTMLEscapeString(evalArgs(args)),
+		index: index,
+		slice: slice,
+		js: (...args: any[]) => JSEscapeString(evalArgs(args)),
+		len: length,
+		not: not,
+		or: or,
+		println: (...args: any[]) => args.map(String).join(' ') + '\n',
+		eq: eq,
+		ge: ge,
+		gt: gt,
+		le: le,
+		lt: lt,
+		ne: ne,
 	};
 };
 
@@ -313,17 +313,17 @@ const ne = (a: any, ...items: any[]): boolean => {
 };
 
 export const findFunction = (name: string, tmpl: Template | null): [any, boolean, boolean] => {
-	if(tmpl !== null) {
+	if (tmpl !== null) {
 		const func = tmpl.getExecFunc(name);
-		if(func) {
+		if (func) {
 			return [func, false, true];
 		}
 	}
 
 	const func = builtins()[name];
-	if(func) {
+	if (func) {
 		return [func, true, true];
 	}
 
 	return [null, false, false];
-}
+};
