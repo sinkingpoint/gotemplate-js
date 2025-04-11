@@ -1,12 +1,13 @@
 {
 	"name": "@sinkingpoint/gotemplate",
-	"version": "0.1.11",
+	"version": "0.1.12",
 	"description": "Go templating, in Javascript",
 	"types": "*.d.ts",
 	"exports": "./index.js",
 	"files": [
 		"./*.js",
 		"./*.d.ts",
+    "./parse/*",
 		"LICENSE",
 		"README.md",
 		"package.json"
