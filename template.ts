@@ -34,8 +34,8 @@ export class Template {
 			parseFuncs: {},
 			execFuncs: {},
 			option: {
-				missingKey: MissingKeyAction.Invalid
-			}
+				missingKey: MissingKeyAction.Invalid,
+			},
 		};
 		this.leftDelim = '';
 		this.rightDelim = '';
@@ -64,12 +64,12 @@ export class Template {
 
 	clone(): Template {
 		const nt = this.copy(null);
-		if(this.common === null) {
+		if (this.common === null) {
 			return nt;
 		}
 
-		for(const key in this.common.tmpl) {
-			if(key === this.name) {
+		for (const key in this.common.tmpl) {
+			if (key === this.name) {
 				nt.common.tmpl[this.name] = nt;
 				continue;
 			}
@@ -78,8 +78,8 @@ export class Template {
 			nt.common.tmpl[key] = tmpl;
 		}
 
-		nt.common.parseFuncs = {...this.common.parseFuncs};
-		nt.common.execFuncs = {...this.common.execFuncs};
+		nt.common.parseFuncs = { ...this.common.parseFuncs };
+		nt.common.execFuncs = { ...this.common.execFuncs };
 
 		return nt;
 	}
@@ -87,7 +87,7 @@ export class Template {
 	copy(c: Common | null): Template {
 		const n = new Template(this.name);
 		n.tree = this.tree;
-		if(c !== null) {
+		if (c !== null) {
 			n.common = c;
 		}
 		n.leftDelim = this.leftDelim;
@@ -133,16 +133,16 @@ export class Template {
 
 	private addValueFuncs(funcMap: Record<string, Function>) {
 		for (const name in funcMap) {
-			if(!goodName(name)) {
+			if (!goodName(name)) {
 				throw `function name "${name}" is not a valid identifier`;
 			}
 
 			const func = funcMap[name];
-			if(typeof func !== "function") {
+			if (typeof func !== 'function') {
 				throw `value for ${name} is not a function`;
 			}
 
-			if(!goodFunc(name, func)) {
+			if (!goodFunc(name, func)) {
 				throw `function ${name} is not a good func`;
 			}
 
@@ -218,8 +218,8 @@ export class Template {
 	}
 
 	execute(data: any): string {
-		let state = new State(this, [{name: "$", value: data}]);
-		if(this.tree === null || this.tree.root === null) {
+		let state = new State(this, [{ name: '$', value: data }]);
+		if (this.tree === null || this.tree.root === null) {
 			throw `"${this.name} is an incomplete or empty template`;
 		}
 
@@ -241,28 +241,28 @@ const goodName = (name: string): boolean => {
 			continue;
 		}
 
-        if(i === 0 && !isLetter(r)) {
-            return false;
-        }
+		if (i === 0 && !isLetter(r)) {
+			return false;
+		}
 
-        if(!isLetter(r) && !isDigit(r)) {
-            return false;
-        }
+		if (!isLetter(r) && !isDigit(r)) {
+			return false;
+		}
 	}
 
-    return true;
+	return true;
 };
 
 // Returns true if the given string is one character, and that character is a letter (in the `L` unicode group).
 const isLetter = (c: string): boolean => {
-    const code = c.charCodeAt(0);
-    return c.length === 1 && c.match(/^\p{L}$/u) !== null;
+	const code = c.charCodeAt(0);
+	return c.length === 1 && c.match(/^\p{L}$/u) !== null;
 };
 
 // Returns true if the given string is one character, and that character is a digit.
 const isDigit = (c: string): boolean => {
-    const code = c.charCodeAt(0);
-    return c.length === 1 && c.match(/^\p{Nd}$/u) !== null;
+	const code = c.charCodeAt(0);
+	return c.length === 1 && c.match(/^\p{Nd}$/u) !== null;
 };
 
 const goodFunc = (name: string, func: Function): boolean => {
@@ -271,4 +271,4 @@ const goodFunc = (name: string, func: Function): boolean => {
 	// Javascript land where functions can return whatever they want, so we can't be that strict :/
 
 	return true;
-}
+};
