@@ -2,8 +2,8 @@
 	"name": "@sinkingpoint/gotemplate",
 	"version": "0.1.10",
 	"description": "Go templating, in Javascript",
-	"types": "dist/*.d.ts",
-	"exports": "./dist/index.js",
+	"types": "*.d.ts",
+	"exports": "./index.js",
 	"files": [
 		"./*.js",
 		"./*.d.ts",
