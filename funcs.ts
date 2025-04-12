@@ -5,7 +5,7 @@ export const builtins = (): Record<string, Function> => {
 	return {
 		and: and,
 		call: () => {},
-		html: (...args: any[]) => HTMLEscapeString(evalArgs(args)),
+		html: (...args: any[]) => HTMLEscape(evalArgs(args)),
 		index: index,
 		slice: slice,
 		js: (...args: any[]) => JSEscapeString(evalArgs(args)),
@@ -19,24 +19,8 @@ export const builtins = (): Record<string, Function> => {
 		le: le,
 		lt: lt,
 		ne: ne,
+		urlquery: (...args: any[]) => encodeURIComponent(evalArgs(args)),
 	};
-};
-
-const HTMLEscapeString = (s: string): string => {
-	const disallowedChars = '\'"&<>\0';
-	let noIllegalChars = true;
-	for (let i = 0; i < s.length; i++) {
-		if (disallowedChars.includes(s[i])) {
-			noIllegalChars = false;
-			break;
-		}
-	}
-
-	if (noIllegalChars) {
-		return s;
-	}
-
-	return HTMLEscape(s);
 };
 
 const HTMLEscape = (s: string): string => {
