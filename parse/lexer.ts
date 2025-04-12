@@ -317,23 +317,25 @@ export class Lexer {
 const lexText: StateFunction = (l: Lexer): StateFunction => {
 	const nextText = l.input.substring(l.pos);
 	const nextLeftDelim = nextText.indexOf(l.leftDelim);
-	if (nextLeftDelim > 0) {
-		l.pos += nextLeftDelim;
-		let trimLength = 0;
-		const delimEnd = l.pos + l.leftDelim.length;
-		if (hasLeftTrimMarker(l.input.substring(delimEnd))) {
-			trimLength = rightTrimLength(l.input.substring(l.start, l.pos));
+	if (nextLeftDelim >= 0) {
+		if (nextLeftDelim > 0) {
+			l.pos += nextLeftDelim;
+			let trimLength = 0;
+			const delimEnd = l.pos + l.leftDelim.length;
+			if (hasLeftTrimMarker(l.input.substring(delimEnd))) {
+				trimLength = rightTrimLength(l.input.substring(l.start, l.pos));
+			}
+
+			l.pos -= trimLength;
+			l.line += countNewLines(l.input.substring(l.start, l.pos));
+			const item = l.thisItem(ItemType.Text);
+			l.pos += trimLength;
+			l.ignore();
+			if (item.val.length > 0) {
+				return l.emitItem(item);
+			}
 		}
 
-		l.pos -= trimLength;
-		l.line += countNewLines(l.input.substring(l.start, l.pos));
-		const item = l.thisItem(ItemType.Text);
-		l.pos += trimLength;
-		l.ignore();
-		if (item.val.length > 0) {
-			return l.emitItem(item);
-		}
-	} else if (nextLeftDelim === 0) {
 		return lexLeftDelim;
 	}
 

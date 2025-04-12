@@ -1,5 +1,6 @@
+import { builtins } from '../funcs';
 import { ItemType } from './lexer';
-import { NumberNode, TextNode } from './node';
+import { NumberNode } from './node';
 import { Tree } from './parser';
 
 /*************/
@@ -393,15 +394,16 @@ test(`1+2i`, () => {
 /*************/
 /** Text **/
 /*************/
-const builtins = [
+const testBuiltins = [
 	{
 		printf: console.log,
 		contains: String.prototype.includes,
+		...builtins,
 	},
 ];
 
 const parse = (s: string): string => {
-	return new Tree(expect.getState().currentTestName ?? '', []).parse(s, '', '', {}, builtins).toString();
+	return new Tree(expect.getState().currentTestName ?? '', []).parse(s, '', '', {}, testBuiltins).toString();
 };
 
 test('empty', () => {
@@ -826,4 +828,12 @@ test('empty pipeline', () => {
 // Missing pipeline in block
 test('empty pipeline', () => {
 	expect(() => parse('{{block "foo"}}hello{{end}}')).toThrow();
+});
+
+test('nested action', () => {
+	parse(`{{- if contains .Status "firing" -}}
+{{- range .Alerts -}}
+{{- $alertInstance := .Labels.instance -}}
+{{- end}}
+{{- end}}`);
 });

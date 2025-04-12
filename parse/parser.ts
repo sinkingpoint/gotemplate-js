@@ -1,4 +1,3 @@
-import { Template } from '../template';
 import { countNewLines, Item, ItemType, Lexer } from './lexer';
 import {
 	ActionNode,
